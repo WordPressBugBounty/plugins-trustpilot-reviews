@@ -25,6 +25,13 @@ class Plugin {
 	protected $plugin_name = 'Trustpilot-review';
 
 	/**
+	 * Current plugin version.
+	 *
+	 * @var string
+	 */
+	protected $plugin_version;
+
+	/**
 	 * Instance of this class.
 	 */
 	protected static $instance = null;

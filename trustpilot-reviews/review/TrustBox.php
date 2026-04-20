@@ -22,6 +22,14 @@ class TrustBox {
 	 * @var      string
 	 */
 	protected $plugin_name = 'Trustpilot-review';
+
+	/**
+	 * Current plugin version.
+	 *
+	 * @var string
+	 */
+	protected $plugin_version;
+
 	protected $products    = null;
 
 	/**
