@@ -166,6 +166,10 @@ class Admin {
 	}
 
 	public function trustpilot_get_category_product_info() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'Unauthorized', 403 );
+		}
+		$this->verify_iframe_nonce();
 		$trustbox         = TrustBox::get_instance();
 		$products         = Products::get_instance();
 		$category         = trustpilot_get_first_category();
@@ -340,35 +344,35 @@ class Admin {
 				<div style='display:block;'>
 					<iframe
 						style='display: inline-block;'
-						src='" . $integration_app_url . "'
+						src='" . esc_url( $integration_app_url ) . "'
 						id='configuration_iframe'
 						frameborder='0'
 						scrolling='no'
 						width='100%'
 						height='1400px'
-						data-plugin-version='" . TRUSTPILOT_PLUGIN_VERSION . "'
+						data-plugin-version='" . esc_attr( TRUSTPILOT_PLUGIN_VERSION ) . "'
 						data-source='WooCommerce'
-						data-version='WooCommerce-" . $version . "'
-						data-page-urls='" . $pageUrlsBase64 . "'
-						data-transfer='" . $integration_app_url . "'
-						data-past-orders='" . $past_orders_info . "'
-						data-settings='" . $settings . "'
-						data-product-identification-options='" . $productIdentificationOptions . "'
-						data-is-from-marketplace='" . TRUSTPILOT_IS_FROM_MARKETPLACE . "'
-						data-configuration-scope-tree='" . $configuration_scope_tree . "'
-						data-plugin-status='" . $pluginStatus . "'
-						" . $mode . "
+						data-version='WooCommerce-" . esc_attr( $version ) . "'
+						data-page-urls='" . esc_attr( $pageUrlsBase64 ) . "'
+						data-transfer='" . esc_url( $integration_app_url ) . "'
+						data-past-orders='" . esc_attr( $past_orders_info ) . "'
+						data-settings='" . esc_attr( $settings ) . "'
+						data-product-identification-options='" . esc_attr( $productIdentificationOptions ) . "'
+						data-is-from-marketplace='" . esc_attr( TRUSTPILOT_IS_FROM_MARKETPLACE ) . "'
+						data-configuration-scope-tree='" . esc_attr( $configuration_scope_tree ) . "'
+						data-plugin-status='" . esc_attr( $pluginStatus ) . "'
+						" . ( class_exists( 'woocommerce' ) ? '' : 'data-mode=\'trustbox-only\'' ) . "
 						onload='onTrustpilotIframeLoad();'>
 					</iframe>
 					<div id='trustpilot-trustbox-preview'
 						hidden='true'
-						data-page-urls='" . $pageUrlsBase64 . "'
-						data-custom-trustboxes='" . $customTrustBoxes . "'
-						data-settings='" . $settings . "'
-						data-src='" . $startingUrl . "'
-						data-name='" . $name . "'
-						data-sku='" . $sku . "'
-						" . $mode . "
+						data-page-urls='" . esc_attr( $pageUrlsBase64 ) . "'
+						data-custom-trustboxes='" . esc_attr( $customTrustBoxes ) . "'
+						data-settings='" . esc_attr( $settings ) . "'
+						data-src='" . esc_url( $startingUrl ) . "'
+						data-name='" . esc_attr( $name ) . "'
+						data-sku='" . esc_attr( $sku ) . "'
+						" . ( class_exists( 'woocommerce' ) ? '' : 'data-mode=\'trustbox-only\'' ) . "
 						data-source='WooCommerce'
 					></div>
 				</div>
